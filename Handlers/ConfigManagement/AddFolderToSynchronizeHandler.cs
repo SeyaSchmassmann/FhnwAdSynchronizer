@@ -17,7 +17,7 @@ public class AddFolderForSynchronizationHandler : IHandler
 
     public async Task<bool> RunAsync()
     {
-        var name = Prompt.Input<string>("Purpose of the folder");
+        var name = Prompt.Input<string>("Purpose/Subject of the folder");
         var sourceFolder = Prompt.Input<string>("Source folder path");
         var targetFolder = Prompt.Input<string>("Target folder path");
 

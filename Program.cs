@@ -18,5 +18,6 @@ services.Scan(selector => selector.FromAssemblyOf<Program>()
 var serviceProvider = services.BuildServiceProvider();
 
 var application = serviceProvider.GetRequiredService<Application>();
+//System.Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 await application.RunAsync(args);

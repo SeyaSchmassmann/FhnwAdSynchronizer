@@ -4,15 +4,15 @@ namespace FhnwAdSynchronizer.Extensions;
 
 public class FileUtils
 {
-    public static List<string> Copy(string sourceDirectory, string targetDirectory, Spinner spinner)
+    public static List<string> Copy(string sourceDirectory, string targetDirectory)
     {
         var sourceDirectoryInfo = new DirectoryInfo(sourceDirectory);
         var targetDirectoryInfo = new DirectoryInfo(targetDirectory);
 
-        return CopyInternal(sourceDirectoryInfo, targetDirectoryInfo, spinner, new());
+        return CopyInternal(sourceDirectoryInfo, targetDirectoryInfo, new());
     }
 
-    private static List<string> CopyInternal(DirectoryInfo sourceDirectoryInfo, DirectoryInfo targetDirectoryInfo, Spinner spinner, List<string> skipped)
+    private static List<string> CopyInternal(DirectoryInfo sourceDirectoryInfo, DirectoryInfo targetDirectoryInfo, List<string> skipped)
     {
         if (targetDirectoryInfo.Exists)
         {
@@ -39,14 +39,13 @@ public class FileUtils
                 targetFileInfo.Attributes &= ~FileAttributes.ReadOnly;
             }
 
-            spinner.Text = $"Copying file {sourceFileInfo.Name} from {sourceDirectoryInfo.FullName} to {targetDirectoryInfo.FullName}";
             sourceFileInfo.CopyTo(targetFilePath, true);
         }
 
         foreach (var diSourceSubDir in sourceDirectoryInfo.GetDirectories())
         {
             var nextTargetSubDir = targetDirectoryInfo.CreateSubdirectory(diSourceSubDir.Name);
-            CopyInternal(diSourceSubDir, nextTargetSubDir, spinner, skipped);
+            CopyInternal(diSourceSubDir, nextTargetSubDir, skipped);
         }
         return skipped;
     }

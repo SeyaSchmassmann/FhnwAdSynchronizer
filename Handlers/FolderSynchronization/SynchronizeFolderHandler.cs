@@ -34,22 +34,21 @@ public class SynchronizeFolderHandler : IHandler
                                                                            null,
                                                                            folder => folder.Name);
 
-        Spinner.Start("Synchronize folders...", spinner =>
+        foreach (var fts in foldersToSynchronize)
         {
-            foreach (var fts in foldersToSynchronize)
+            Spinner.Start($"Synchronize folder '{fts.Name}'", spinner =>
             {
                 try
                 {
-                    var skipped = FileUtils.Copy(fts.SourceFolder, fts.TargetFolder, spinner);
-                    var skippedText = skipped.Count > 0 ? $"{skipped.Count} file(s) were skipped" : "";
-                    spinner.Succeed($"Folder(s) successfully copied! {skippedText}");
+                    var skipped = FileUtils.Copy(fts.SourceFolder, fts.TargetFolder);
+                    spinner.Succeed($"Folder '{fts.Name}' successfully copied! {skipped.Count} file(s) skipped!");
                 }
                 catch (Exception ex)
                 {
                     spinner.Fail(ex.Message);
                 }
-            }
-        });
+            });
+        }
 
         return Task.FromResult(true);
     }
