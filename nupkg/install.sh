@@ -1,1 +1,0 @@
-dotnet tool install --global --add-source ./ FhnwAdSynchronizer
