@@ -28,14 +28,14 @@ public class FileUtils
             var targetFilePath = Path.Combine(targetDirectoryInfo.FullName, sourceFileInfo.Name);
             var targetFileInfo = File.Exists(targetFilePath) ? new FileInfo(targetFilePath) : null;
 
+            if (ShouldFileBeSkipped(sourceFileInfo))
+            {
+                skipped.Add(sourceFileInfo.Name);
+                continue;
+            }
+
             if (targetFileInfo != null)
             {
-                if (ShouldFileBeSkipped(sourceFileInfo, targetFileInfo))
-                {
-                    skipped.Add(sourceFileInfo.Name);
-                    continue;
-                }
-
                 targetFileInfo.Attributes &= ~FileAttributes.ReadOnly;
             }
 
@@ -50,9 +50,9 @@ public class FileUtils
         return skipped;
     }
 
-    private static bool ShouldFileBeSkipped(FileInfo sourceFile, FileInfo targetFile)
+    private static bool ShouldFileBeSkipped(FileInfo sourceFile)
     {
-        if (sourceFile.IsMediaFile())
+        if (sourceFile.IsMediaFile() || sourceFile.IsInstallationFile() || sourceFile.Extension == ".DS_Store")
         {
             return true;
         }
