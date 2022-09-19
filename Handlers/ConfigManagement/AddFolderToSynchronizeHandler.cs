@@ -24,7 +24,7 @@ public class AddFolderForSynchronizationHandler : IHandler
         var configurationObject = _configuratonService.ConfigurationObject;
         await Spinner.StartAsync("Adding folder for synchonization to configuration...", async spinner =>
         {
-            configurationObject.FoldersToSynchronize.Add(new(Guid.NewGuid(), name, sourceFolder, targetFolder));
+            configurationObject.FoldersToSynchronize.Add(new(Guid.NewGuid(), name, targetFolder, sourceFolder));
             await _configuratonService.UpdateConfigurationObject(configurationObject);
             spinner.Succeed($"Folder {name} successfully added!");
         });
